@@ -1,0 +1,194 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabTen;
+
+#include("stdlib.hhf");
+
+static
+  numberOne: int8;
+  numberTwo: int8;
+
+// Reads in an int8. Will catch exceptions if user attempts to input
+// a value that is not a valid int8.
+procedure getNumber(prompt: string);
+begin getNumber;
+
+  forever
+
+    stdout.put(prompt);
+    try
+      stdin.geti8();
+      unprotected
+        stdin.flushInput();
+        break;
+    anyexception
+      stdout.put("Not a valid signed 8-bit integer.", nl, nl);
+    endtry;
+
+  endfor;
+
+end getNumber;
+
+// Prints a value in binary format.
+procedure printBinaryAndDecimal(value: int8);
+begin printBinaryAndDecimal;
+
+  push(eax);
+  push(ecx);
+
+  stdout.put("%");
+  mov(value, al);
+
+  for(mov(0, cl); cl < 8; inc(cl)) do
+    shl(1, al);
+    if (@c) then
+      stdout.put("1");
+    else
+      stdout.put("0");
+    endif;
+
+    if (cl == 3) then
+      stdout.put("_");
+    endif;
+  endfor;
+  stdout.put(" [", value, "]");
+
+  pop(ecx);
+  pop(eax);
+
+end printBinaryAndDecimal;
+
+// Asks the user if they want to go again. "Returns" true in al
+// if they answer yes, otherwise returns false in al.
+procedure goAgain;
+begin goAgain;
+
+  stdout.put("Try another set of numbers (y/n)? ");
+  stdin.getc();
+  stdin.flushInput();
+
+  if (al == 'y' || al == 'Y') then
+    mov(true, al);
+  else
+    mov(false, al);
+  endif;
+
+end goAgain;
+
+begin LabTen;
+
+  console.cls();
+
+  forever
+
+    getNumber("Enter a number between -128 and 127: ");
+    mov(al, numberOne);
+    stdout.newln();
+
+    getNumber("Enter another number between -128 and 127: ");
+    mov(al, numberTwo);
+    stdout.newln();
+
+    //----- ADD THE NUMBERS -----//
+
+    // 1. Add numberOne and numberTwo;
+    //    use al as middleman/result
+
+    printBinaryAndDecimal(numberOne);
+    stdout.put(" + ");
+    printBinaryAndDecimal(numberTwo);
+    stdout.put(" = ");
+    printBinaryAndDecimal(al); // expects result to be in al
+    stdout.newln();
+    stdout.newln();
+
+    //----- REVERSE THE SIGN USING INVERT (NOT) + ADD 1 (numberOne) -----//
+
+    // 2. Reverse the sign of numberOne using NOT (INVERT) and ADD 1;
+    //    use al as middleman/result
+
+    stdout.put("NOT/+1  ");
+    printBinaryAndDecimal(numberOne);
+    stdout.put(" = ");
+    printBinaryAndDecimal(al); // expects result to be in al
+    stdout.newln();
+
+    //----- REVERSE THE SIGN USING NEG (NEGATE) (numberTwo) -----//
+
+    // 3. Reverse the sign of numberTwo using NEG (NEGATE);
+    //    use al as middleman/result
+
+    stdout.put("NEGATED ");
+    printBinaryAndDecimal(numberTwo);
+    stdout.put(" = ");
+    printBinaryAndDecimal(al); // expects result to be in al
+    stdout.newln();
+    stdout.newln();
+
+    //----- bitwise AND to clear bits (numberOne) -----//
+
+    // 4. Use AND to clear the upper nibble of numberOne;
+    //    use bl to store the "clearing" value and al as middleman/result
+
+    printBinaryAndDecimal(numberOne);
+    stdout.put(" AND ");
+    printBinaryAndDecimal(bl); // expects "clearing" value to be in bl
+    stdout.put(" = ");
+    printBinaryAndDecimal(al); // expects result to be in al
+    stdout.newln();
+    stdout.newln();
+    mov(al, numberOne); // expects result to be in al
+
+    //----- bitwise OR to set bits (numberTwo) -----//
+
+    mov(0, numberTwo); // zeroing out numberTwo so we can OR it meaningfully
+
+    // 5. Use OR to set specific bits in numberTwo;
+    //    use bl to store the "setting" value and al as middleman/result
+    //    (recommended "setting" value is something like %1010_1010)
+
+    printBinaryAndDecimal(numberTwo);
+    stdout.put(" OR ");
+    printBinaryAndDecimal(bl); // expects "setting" value to be in bl
+    stdout.put(" = ");
+    printBinaryAndDecimal(al); // expects result to be in al
+    stdout.newln();
+    stdout.newln();
+    mov(al, numberTwo); // expects result to be in al
+
+    //----- WHAT DO THE VALUES LOOK LIKE NOW? -----//
+
+    stdout.put("1st number: ");
+    printBinaryAndDecimal(numberOne);
+    stdout.newln();
+    stdout.put("2nd number: ");
+    printBinaryAndDecimal(numberTwo);
+    stdout.newln();
+    stdout.newln();
+
+    //-----  bitwise XOR to "zero out" both values -----//
+
+    // numberOne "zeroed out"
+
+    mov(numberOne, al);
+    xor(al, numberOne); // numberOne itself is altered
+    stdout.put("XORed 1st number: ");
+    printBinaryAndDecimal(numberOne); // should be all zeros
+    stdout.newln();
+
+    // 6. Use XOR to "zero out" all bits in numberTwo;
+    //    see example XORing numberOne above
+
+    stdout.put("XORed 2nd number: ");
+    printBinaryAndDecimal(numberTwo);
+    stdout.newln();
+
+    stdout.newln();
+    goAgain();
+    breakif(al == false);
+    console.cls();
+  endfor;
+
+end LabTen;

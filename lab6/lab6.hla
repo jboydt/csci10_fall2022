@@ -1,0 +1,101 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabSix;
+
+#include("stdlib.hhf");
+
+static
+  numberOne: uns8;
+  numberTwo: uns8;
+
+// Reads in a number between min and max. "Returns" a value in al.
+// THIS FUNCTION IS COMPLETE
+procedure getNumber(prompt: string; min: uns8; max: uns8);
+begin getNumber;
+
+  forever
+    stdout.put(prompt);
+    stdin.getu8();
+    stdin.flushInput();
+    breakif(al >= min && al <= max);
+    stdout.put("Invalid input. Please try again.", nl, nl);
+  endfor;
+
+end getNumber;
+
+// Asks the user if they want to play again. "Returns" true in al
+// if they answer yes, otherwise returns false in al.
+procedure playAgain;
+begin playAgain;
+
+  stdout.put("Play again (y/n)? ");
+  stdin.getc();  // the character entered will be stored in register al
+  stdin.flushInput();
+
+  // 1. Write the statement(s) needed to "return" true or false
+  //    If the user has entered 'Y' or 'y', MOV true into al
+  //    Otherwise MOV false into al
+
+end playAgain;
+
+begin LabSix;
+
+    console.cls();
+
+  forever
+
+    getNumber("Enter a number: ", 0, 255);
+    mov(al, numberOne);
+
+    getNumber("Enter another number: ", 0, 255);
+    mov(al, numberTwo);
+
+
+    // -- ADD -- //
+    // 2. MOV numberOne into bl -- setting up a middleman
+
+    // 3. ADD numberTwo and bl (middleman for numberOne)
+
+    // Checking for carry (@c) -- this means the numberOne + numberTwo > 255
+    if (@c) then
+      stdout.put("ADD error. Cannot compute result.", nl);
+    else
+      // Prompt the user to do the math problem
+      stdout.put(numberOne, " + ", numberTwo, " = ", nl);
+      getNumber("? ", 0, 255);
+
+      // Compare the user's input (al, returned by getNumber) with
+      // the correctly computed result of numberOne + numberTwo --
+      // bl still contains the result of the ADD instruction
+      if (al == bl) then
+        stdout.put("That is correct!", nl);
+      else
+        // Show them the correct answer
+        stdout.put(numberOne, " + ", numberTwo, " = ", (type uns8 bl), nl);
+      endif;
+    endif;
+    // -- end of ADD -- //
+
+    // -- SUB -- //
+
+    // 4. Now, repeat the entire thing for SUB
+    //    check for carry (@c) -- which means numberOne - numberTwo < 0
+
+    // -- end of SUB -- //
+
+    // -- MUL -- //
+
+    // 5. Now, repeat the entire thing for MUL
+    //    use the HLA MUL, that allows for two operands
+    //    check for overflow (@o), which means that numberOne * numberTwo > 255
+
+    // -- end of MUL -- //
+
+    playAgain();
+    breakif(al == false);
+      console.cls();
+  endfor;
+
+end LabSix;

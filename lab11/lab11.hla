@@ -1,0 +1,156 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabEleven;
+
+#include("stdlib.hhf");
+
+static
+  num8: int8;
+  num16: int16;
+  num32: int32;
+
+// Reads in an int8 and returns a value between min and max.
+// Will catch exceptions if user attempts to input a value that
+// is not a valid int8.
+procedure getInt8(prompt: string; min: int8; max: int8);
+begin getInt8;
+
+  forever
+
+    stdout.put(prompt);
+    try
+      stdin.geti8();
+      unprotected
+        stdin.flushInput();
+        breakif((type int8 al) >= min && (type int8 al) <= max);
+        stdout.put("Input is not between ", min, " and ", max, ".", nl, nl);
+    anyexception
+      stdout.put("Not a valid signed 8-bit integer.", nl, nl);
+    endtry;
+
+  endfor;
+
+end getInt8;
+
+// Reads in an int16 and returns a value between min and max.
+// Will catch exceptions if user attempts to input a value that
+// is not a valid int16.
+procedure getInt16(prompt: string; min: int16; max: int16);
+begin getInt16;
+
+  // 1. use getInt8 above as a guide to implementing this function with
+  //    both min/max checking and exception handling.
+
+end getInt16;
+
+// Reads in an int32 and returns a value between min and max.
+// Will catch exceptions if user attempts to input a value that
+// is not a valid int32.
+procedure getInt32(prompt: string; min: int32; max: int32);
+begin getInt32;
+
+  // 2. use getInt8 above as a guide to implementing this function with
+  //    both min/max checking and exception handling.
+
+end getInt32;
+
+// Asks the user if they want to go again. "Returns" true in al
+// if they answer yes, otherwise returns false in al.
+procedure goAgain;
+begin goAgain;
+
+  stdout.put("Try another set of numbers (y/n)? ");
+  stdin.getc();
+  stdin.flushInput();
+
+  if (al == 'y' || al == 'Y') then
+    mov(true, al);
+  else
+    mov(false, al);
+  endif;
+
+end goAgain;
+
+// Prints an address (in hex) and the value at that address
+// (signed integer/decimal).
+// "addr" is the memory address to access for the value, and "itype" is
+// interpreted as int8 (itype = 1), int16 (itype = 2), or int32 (itype = 3).
+procedure printValue(addr: dword; itype: uns8);
+begin printValue;
+
+  mov(addr, eax); // need the address in a register to use indirect addressing
+
+  if (itype == 1) then
+    mov([eax], bl); // indirect addressing to copy the value to bl (int8)
+    stdout.put("$", eax, " = ", (type int8 bl), " (int8)", nl);
+  elseif (itype == 2) then
+
+    // 3. Complete this section to print out int16
+
+  elseif (itype == 3) then
+
+    // 4. Complete this section to print out int32
+
+  endif;
+
+end printValue;
+
+begin LabEleven;
+
+  console.cls();
+
+  forever
+
+    //----- INPUTS -----//
+
+    getInt8("Enter a number between -99 and 99: ", -99, 99);
+    mov(al, num8);
+
+    stdout.newln();
+
+    // 5. Use getInt16 to get int16 input from the user
+
+    stdout.newln();
+
+    // 6. Use getInt32 to get int32 input from the user
+
+    stdout.newln();
+    stdout.newln();
+
+    //----- TAKING ADDRESSES USING HLA & OPERATOR -----//
+    stdout.put("Taking addresses using &", nl, nl);
+
+    mov(&num8, eax);
+    printValue(eax, 1); // addr is in eax, itype = 1
+
+    // 7. Copy the address of num16 into eax, using HLA & operator,
+    //    then call print value with eax and itype = 2 (int16)
+
+    // 8. Copy the address of num32 into eax, using HLA & operator,
+    //    then call print value with eax and itype = 3 (int32)
+
+    stdout.newln();
+    stdout.newln();
+
+    //----- TAKING ADDRESSES USING x86 LEA INSTRUCTION -----//
+    stdout.put("Taking addresses using LEA", nl, nl);
+
+    lea(eax, num8); // LEA operands are (destination, source)
+    printValue(eax, 1);
+
+    // 9. Load the address of num16 into eax, using x86 LEA instruction,
+    //    then call print value with eax and itype = 2 (int16)
+
+    // 10. Load the address of num32 into eax, using x86 LEA instruction,
+    //    then call print value with eax and itype = 3 (int32)
+
+    stdout.newln();
+    goAgain();
+    breakif(al == false);
+
+    console.cls();
+  endfor;
+
+end LabEleven;

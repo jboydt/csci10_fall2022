@@ -1,0 +1,83 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabSeven;
+
+#include("stdlib.hhf");
+
+static
+  userInput: uns16;
+
+// Reads in a number between min and max. "Returns" a value in ax.
+procedure getNumber(prompt: string; min: uns16; max: uns16);
+begin getNumber;
+
+  forever
+
+    // 1. Refer to recent labs for a similar function
+    //    Importantly, this function must read and return an uns16
+    //    so you will need to use stdin.getu16()
+
+  endfor;
+
+end getNumber;
+
+// Asks the user if they want to go again. "Returns" true in al
+// if they answer yes, otherwise returns false in al.
+procedure goAgain;
+begin goAgain;
+
+  // 2. Refer to recent labs for a similar function
+
+end goAgain;
+
+// Display all of the factors/divisors of a number, from 1 up to and including
+// the number itself. Counts the factors/divisors, and "returns" the number of
+// factors/divisors in al
+procedure showFactors(number: uns16);
+var
+  factorCount: uns8; // the counter
+begin showFactors;
+
+  // Loop from 1 up to and including the number
+  // cx will be used as the denominator
+  for(mov(1, cx); cx <= number; inc(cx)) do
+
+    // 3. Copy number into ax, which will be the numerator
+
+    // 4. Zero extend dx -- since the number is 16-bits,
+    //    we need a 32-bit numerator
+
+    // 5. Divide the numerator (dx:ax) by the denominator (cx)
+
+    // 6. If the remainder is 0, cx is a factor, so print it out
+    //    and increment the factor counter
+
+  endfor;
+
+  // 7. Copy the factor counter into al so it is "returned"
+
+end showFactors;
+
+begin LabSeven;
+
+  console.cls();
+
+  forever
+
+    getNumber("Enter a number between 2-65535: ", 2, 65535);
+    mov(ax, userInput);
+
+    showFactors(userInput);
+
+    // 8. Print a message showing the result of showFactors;
+    //    if showFactors "returns" (in al) 2, user input is prime;
+    //    any other value means user input is not prime
+
+    goAgain();
+    breakif(al == false);
+    console.cls();
+  endfor;
+
+end LabSeven;

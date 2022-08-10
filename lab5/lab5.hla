@@ -1,0 +1,153 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabFive;
+
+#include("stdlib.hhf");
+
+static
+  bankroll: uns16 := 100;
+  wager: uns16;
+
+// Prints a greeting.
+procedure greet;
+begin greet;
+
+  // 1. Print a greeting that is appropriate
+
+end greet;
+
+// Reads in a number between min and max. "Returns" a value in ax.
+procedure getWager(prompt: string; min: uns16; max: uns16);
+begin getWager;
+
+  forever
+    stdout.put(prompt);
+    stdin.getu16();
+    stdin.flushInput();
+
+    // 2. Write a breakif here comparing ax (the 16-bit input) with min
+    //    and max to exit the loop only if ax is between min and max (inclusive)
+
+    stdout.put("Invalid input. Please try again.", nl, nl);
+  endfor;
+
+end getWager;
+
+// Prints a slot machine "symbol" based on a number.
+//
+// number = 1: @CHERRY@
+// number = 2: $MONEY$
+// number = 3: *STAR*
+procedure showSymbol(number: uns32);
+begin showSymbol;
+
+  // 3. Use number (the parameter) in a decision tree to print the
+  //    correct output
+
+end showSymbol;
+
+// Returns 1, 2, or 3 based on a probability distribution. "Returns" the result
+// in eax.
+// THIS FUNCTION IS COMPLETE, BUT YOU ARE FREE TO EXPERIMENT WITH THE
+// PROBABILITY DISTRIBUTION.
+procedure spinOneWheel;
+begin spinOneWheel;
+
+  rand.urange(1, 100);
+  if (eax < 60) then
+    mov(1, eax); // 60% probability of getting a 1
+  elseif (eax < 90) then
+    mov(2, eax); // 30% probability of getting a 2
+  else
+    mov(3, eax); // 10% probability of getting a 3
+  endif;
+
+end spinOneWheel;
+
+// Spin three wheels and then check the result. "Returns" the result in al.
+//
+// all three wheels are cherry (1): returns 1
+// all three wheels are money (2):  returns 2
+// all three wheels are star (3):   returns 3
+// all three wheels do not match:   returns 0
+procedure spinAllWheels;
+// local variables
+var
+  wheelOne: uns32;
+  wheelTwo: uns32;
+  wheelThree: uns32;
+begin spinAllWheels;
+
+  spinOneWheel();
+  mov(eax, wheelOne);
+  spinOneWheel();
+  mov(eax, wheelTwo);
+  spinOneWheel();
+  mov(eax, wheelThree);
+
+  showSymbol(wheelOne);
+  showSymbol(wheelTwo);
+  showSymbol(wheelThree);
+
+  // 4. Use the three local variables (wheelOne, wheelTwo, wheelThree) in a
+  //    decision tree to "return" the proper result in al.
+
+end spinAllWheels;
+
+// Asks the user if they want to play again. "Returns" true in al
+// if they answer yes, otherwise returns false in al.
+procedure playAgain;
+begin playAgain;
+
+  // 5. Use the code from lab 4 here -- it will be the same
+
+end playAgain;
+
+begin LabFive;
+  rand.randomize();
+
+  console.cls();
+  greet();
+
+  forever
+    stdout.put("Your bankroll -> ", bankroll, nl, nl);
+    getWager("Please enter your wager: ", 1, bankroll);
+    mov(ax, wager); // getWager "returned" the input in ax
+
+    // 6. Subtract the user's wager (using ax as a middleman) from the
+    //    bankroll
+
+    stdout.newln();
+    spinAllWheels();
+    stdout.newln();
+
+    if (al == 1) then
+      mov(wager, ax);
+      add(ax, bankroll);
+      stdout.put(nl, "You won ", wager, " !", nl);
+    elseif (al == 2) then
+
+      // 7. Prepare ax as a middleman for wager, then add ax (the wager)
+      //    to the bankroll two times (double the winnings!)
+
+      stdout.put(nl, "You won ", wager, "*2 !", nl);
+    elseif (al == 3) then
+
+      // 8. Prepare ax as a middleman for wager, then add ax (the wager)
+      //    to the bankroll three times (triple the winnings!)
+
+      stdout.put(nl, "You won ", wager, "*3 !", nl);
+    endif;
+
+    playAgain();
+
+    // 9. breakif the player is out of money OR playAgain "returns" false in al
+
+    console.cls();
+  endfor;
+
+  stdout.put("Your finished with -> ", bankroll, nl, nl);
+
+end LabFive;

@@ -1,0 +1,162 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabSeventeen;
+
+#include ("stdlib.hhf")
+
+static
+  input1: real32;
+  input2: real32;
+
+// Loads global "input" variable with user input.
+procedure getFloat (prompt: string);
+begin getFloat;
+
+  forever
+    try
+      stdout.put(prompt);
+      stdin.getf();
+      unprotected
+        stdin.flushInput();
+        break;
+    anyexception
+      stdout.put("Input is not a real32 value.", nl, nl);
+    endtry;
+  endfor;
+
+end getFloat;
+
+// Asks the user if they want to go again. "Returns" true in al
+// if they answer yes, otherwise returns false in al.
+procedure goAgain(prompt: string);
+begin goAgain;
+
+  stdout.put(prompt);
+  stdin.getc();
+  stdin.flushInput();
+
+  if (al == 'y' || al == 'Y') then
+    mov(true, al);
+  else
+    mov(false, al);
+  endif;
+
+end goAgain;
+
+// Compute and display result of num1 + num2.
+procedure addNumbers(num1: real32; num2: real32);
+var
+  sum: real32;
+begin addNumbers;
+
+  fld(num1);
+  fld(num2);
+  faddp();
+  fstp(sum);
+
+  // EX: num1:10:3 means print into field of width 10, with 3 decimal places
+  stdout.put(num1:10:3, " + ", num2:10:3, " = ", sum:10:3, nl);
+
+end addNumbers;
+
+// Compute and display result of num1 - num2.
+procedure subtractNumbers(num1: real32; num2: real32);
+var
+  diff: real32;
+begin subtractNumbers;
+
+  // 1. FLD num1 onto the FPU stack
+
+  // 2. FLD num2 onto the FPU stack
+
+  // 3. FSUBP to subtract top two items on FPU stack
+
+  // 4. FSTP to pop top of FPU stack into "diff"
+
+  // 5. Output "diff" -- format same as output in "addNumbers" above
+
+end subtractNumbers;
+
+// Compute and display result of num1 * num2.
+procedure multiplyNumbers(num1: real32; num2: real32);
+var
+  prod: real32;
+begin multiplyNumbers;
+
+  // 6. FLD num1 onto the FPU stack
+
+  // 7. FLD num2 onto the FPU stack
+
+  // 8. FMULP to multiply top two items on FPU stack
+
+  // 9. FSTP to pop top of FPU stack into "prod"
+
+  // 10. Output "prod" -- format same as output in "addNumbers" above
+
+end multiplyNumbers;
+
+// Compute and display result of num1 / num2.
+procedure divideNumbers(num1: real32; num2: real32);
+var
+  quot: real32;
+begin divideNumbers;
+
+  // 11. FLD num1 onto the FPU stack
+
+  // 12. FLD num2 onto the FPU stack
+
+  // 13. FDIVP to divide top two items on FPU stack
+
+  // 14. FSTP to pop top of FPU stack into "quot"
+
+  // 15. Output "quot" -- format same as output in "addNumbers" above
+
+end divideNumbers;
+
+procedure squareRoot(num1: real32);
+var
+  sqrt: real32;
+begin squareRoot;
+
+  fld(num1);
+
+  // 16. Compute the square root of the value on top of the FPU stack
+  //     (*may require research in your text)
+
+  fstp(sqrt);
+  stdout.put("square root of ", num1:10:3, " = ", sqrt:10:3, nl);
+
+end squareRoot;
+
+begin LabSeventeen;
+
+  forever
+
+    console.cls();
+
+    getFloat("Enter a floating point value: ");
+    fstp(input1);
+    stdout.put("You entered ", input1:10:3, nl, nl);
+
+    getFloat("Enter another floating point value: ");
+    fstp(input2);
+    stdout.put("You entered ", input2:10:3, nl, nl);
+
+    addNumbers(input1, input2);
+    subtractNumbers(input1, input2);
+    multiplyNumbers(input1, input2);
+    divideNumbers(input1, input2);
+
+    stdout.newln();
+    squareRoot(input1);
+    squareRoot(input2);
+
+    stdout.newln();
+    goAgain("Try more numbers (y/n)? ");
+    breakif(al == false);
+    console.cls();
+  endfor;
+
+end LabSeventeen;

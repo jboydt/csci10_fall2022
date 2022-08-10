@@ -1,0 +1,130 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabNine;
+
+#include("stdlib.hhf");
+
+static
+  numberOne: uns8;
+  numberTwo: uns8;
+
+// Reads in an uns8. Will catch exceptions if user attempts to input
+// a value that is not a valid uns8.
+procedure getNumber(prompt: string);
+begin getNumber;
+
+  forever
+
+    stdout.put(prompt);
+    try
+      stdin.getu8();
+      unprotected
+        stdin.flushInput();
+        break;
+    anyexception
+      stdout.put("Not a valid unsigned 8-bit integer.", nl, nl);
+    endtry;
+
+  endfor;
+
+end getNumber;
+
+// Prints a value in binary format. Not followed by newline so that
+// it can be used inline with other outputs.
+procedure printBinary(value: uns8);
+begin printBinary;
+
+  push(eax);
+  push(ecx);
+
+  stdout.put("%");
+  mov(value, al);
+
+  for(mov(0, cl); cl < 8; inc(cl)) do
+    shl(1, al);
+    if (@c) then
+      stdout.put("1");
+    else
+      stdout.put("0");
+    endif;
+
+    if (cl == 3) then
+      stdout.put("_");
+    endif;
+  endfor;
+
+  pop(ecx);
+  pop(eax);
+
+end printBinary;
+
+// Asks the user if they want to go again. "Returns" true in al
+// if they answer yes, otherwise returns false in al.
+procedure goAgain;
+begin goAgain;
+
+  stdout.put("Try another set of numbers (y/n)? ");
+  stdin.getc();
+  stdin.flushInput();
+
+  if (al == 'y' || al == 'Y') then
+    mov(true, al);
+  else
+    mov(false, al);
+  endif;
+
+end goAgain;
+
+begin LabNine;
+
+  console.cls();
+
+  forever
+
+    getNumber("Enter a number between 0-255: ");
+    mov(al, numberOne);
+    stdout.newln();
+
+    getNumber("Enter another number between 0-255: ");
+    mov(al, numberTwo);
+    stdout.newln();
+
+    // bitwise AND
+    mov(numberOne, al);
+    and(numberTwo, al);
+    printBinary(numberOne);
+    stdout.put(" AND ");
+    printBinary(numberTwo);
+    stdout.put(" = ");
+    printBinary(al);
+    stdout.newln();
+
+    // bitwise OR
+    // 1. Use the AND section above as a guide to (1) compute bitwise OR
+    //    of numberOne and numberTwo, then (2) display the result (following
+    //    the same format as the AND section above).
+
+    // bitwise XOR
+    // 2. Use the AND section above as a guide to (1) compute bitwise XOR
+    //    of numberOne and numberTwo, then (2) display the result (following
+    //    the same format as the AND section above).
+
+    // bitwise NOT (numberOne)
+    // 3. Compute bitwise NOT of numberOne, then (2) display the result (following
+    //    a similar format as the AND section above, e.g.,
+    //    "NOT %0000_0000 = %1111_1111").
+
+    // bitwise NOT (numberTwo)
+    // 4. Compute bitwise NOT of numberTwo, then (2) display the result (following
+    //    a similar format as the AND section above, e.g.,
+    //    "NOT %0000_0000 = %1111_1111").
+
+    stdout.newln();
+    goAgain();
+    breakif(al == false);
+      console.cls();
+  endfor;
+
+end LabNine;

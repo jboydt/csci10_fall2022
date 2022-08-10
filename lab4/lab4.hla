@@ -1,0 +1,101 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabFour;
+
+#include("stdlib.hhf");
+
+static
+  gamesPlayed: uns8;    // to count how many games the user plays before quitting
+  numGuesses: uns8;     // to count how many guesses it takes the user each round
+  computerNumber: uns8; // the randomly generated number for the game
+
+// Prints a greeting.
+procedure greet;
+begin greet;
+
+  // 1. Welcome the user to the game by printing a greeting
+
+end greet;
+
+// Reads in a number between min and max. "Returns" a value in al.
+// THIS FUNCTION IS COMPLETE
+procedure getNumber(prompt: string; min: uns8; max: uns8);
+begin getNumber;
+
+  forever
+    stdout.put(prompt);
+    stdin.getu8();
+    stdin.flushInput();
+    breakif(al >= min && al <= max);
+    stdout.put("Invalid input. Please try again.", nl, nl);
+  endfor;
+
+end getNumber;
+
+// Print messages letting the player know if their guess is
+// too high, too low, or correct.
+procedure showHelp(userNumber: uns8; computerNumber: uns8);
+begin showHelp;
+
+  mov(userNumber, bl);
+  // 2. Write the statement(s) needed to let the user know how they are
+  //    doing (too low, too high, correct); you will need to compare bl,
+  //    the middleman, with computerNumber
+
+end showHelp;
+
+// Asks the user if they want to play again. "Returns" true in al
+// if they answer yes, otherwise returns false in al.
+procedure playAgain;
+begin playAgain;
+
+  stdout.put("Play again (y/n)? ");
+  stdin.getc();  // the character entered will be stored in register al
+  stdin.flushInput();
+
+  // 3. Write the statement(s) needed to "return" true or false
+  //    If the user has entered 'Y' or 'y', MOV true into al
+  //    Otherwise MOV false into al
+
+end playAgain;
+
+begin LabFour;
+  rand.randomize(); // seeds the random number generator
+
+  greet();
+
+  forever
+    add(1, gamesPlayed);     // starting another round, keep count
+
+    rand.urange(1, 100);     // generate a random number between 1 and 100
+    mov(al, computerNumber); // store the random number into variable computerNumber
+
+    // 4. Write a MOV instruction to set variable numGuesses to 0
+    //    We will keep count of the number of guesses per round
+
+    repeat
+
+      // 5. Write an ADD instruction to add 1 to numGuesses
+
+      getNumber("Enter a number between 1-100: ", 1, 100); // number will be in al
+
+      // 6. Invoke procedure showHelp, passing al (user input) and computerNumber
+      //    as arguments
+
+    until(al == computerNumber);
+
+    // 7. Print out a message showing how many guesses it took the user to
+    //    be correct (using the counter numGuesses)
+
+    // 8. Invoke playAgain (which will "return" al with true or false)
+
+    // 9. Do a "breakif" if al ("returned" by playAgain) is false
+
+    console.cls(); //
+  endfor;
+
+  // 10. Print out a message showing how many games the player played
+
+end LabFour;

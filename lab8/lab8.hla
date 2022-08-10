@@ -1,0 +1,150 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabEight;
+
+#include("stdlib.hhf");
+
+// Reads in a number between min and max. "Returns" a value in al.
+procedure getNumber(prompt: string; min: uns8; max: uns8);
+begin getNumber;
+
+    // 1. Refer to recent labs for a similar function
+    //    Importantly, this function must read and return an uns8
+    //    so you will need to use stdin.getu8()
+
+end getNumber;
+
+// Asks the user if they want to go again. "Returns" true in al
+// if they answer yes, otherwise returns false in al.
+procedure goAgain;
+begin goAgain;
+
+  // 2. Refer to recent labs for a similar function
+
+end goAgain;
+
+// Display a value and a "bar graph" for that value. To ensure the "bar graph"
+// fits on the screen, divide the number by 10 and display one symbol for each
+// increment of ten in the parameter value.
+//
+// EX: 15 will print one symbol, 25 two symbols, 55 five symbols, etc.
+//     45 ****
+//     25 **
+//      9
+procedure showGraph(number: uns8);
+begin showGraph;
+
+  // NOTE: we are using the stack to preserve both eax and ecx
+  //       because our procedure overwrites these registers
+  //       we push 32-bit registers because this maximizes stack performance
+  push(eax);
+  push(ecx);
+
+  // 3. Move the parameter (number) into al
+
+  // 4. Zero extend into ah
+
+  // 5. Divide ax by 10
+
+  stdout.put(number, " -> ");
+  for(mov(0, cl); cl < al; inc(cl)) do
+    stdout.put("*");
+  endfor;
+  stdout.newln();
+
+  // NOTE: we restore ecx and eax by retrieving their values from the stack
+  //       we pop in reverse order due to the nature of the stack
+  pop(ecx);
+  pop(eax);
+
+end showGraph;
+
+// Compute the sum of the 4 parameter values and display the sum with an
+// appropriate message. Then, compute the average (rounded, since these are
+// integers) and display the average with an appropriate message.
+procedure totalAndAverage(n1: uns8; n2: uns8; n3: uns8; n4: uns8);
+begin totalAndAverage;
+  // 6. PUSH any 32-bit registers you use in this procedure on the stack,
+  //    so that their original values can be preserved
+
+  // 7. Compute and display the sum of the 4 parameters
+
+  // 8. Compute and display the average of the 4 parameters
+
+  // 9. POP (in reverse order) any 32-bit registers that were preserved on
+  //    the stack
+end totalAndAverage;
+
+// Identify the minimum value among the 4 parameters and display that
+// value with an appropriate message.
+procedure min(n1: uns8; n2: uns8; n3: uns8; n4: uns8);
+begin min;
+  // 10. Compute and display the smallest (minimum) of the 4 parameter values
+  //     It is import that you PUSH/POP to preserve/restore any registers
+  //     you use in this procedure
+end min;
+
+// Identify the maximum value among the 4 parameters and display that
+// value with an appropriate message.
+procedure max(n1: uns8; n2: uns8; n3: uns8; n4: uns8);
+begin max;
+  // 11. Compute and display the largest (maximum) of the 4 parameter values
+  //     It is import that you PUSH/POP to preserve/restore any registers
+  //     you use in this procedure
+end max;
+
+begin LabEight;
+
+  console.cls();
+
+  forever
+
+    getNumber("Enter a number between 0-255: ", 0, 255);
+
+    // We have to PUSH eax onto the stack at this point so that the first
+    // input can be restored to al after the remaining inputs
+    push(eax);
+
+    getNumber("Enter a number between 0-255: ", 0, 255);
+    mov(al, bl); // al overwritten by getNumber -- move value to bl (2nd input)
+
+    getNumber("Enter a number between 0-255: ", 0, 255);
+    mov(al, cl); // al overwritten by getNumber -- move value to cl (3rd input)
+
+    getNumber("Enter a number between 0-255: ", 0, 255);
+    mov(al, dl); // al overwritten by getNumber -- move value to dl (4th input)
+
+    // Now, we restore the 1st input by retrieving it from the stack
+    pop(eax);
+
+    stdout.newln();
+
+    stdout.put("First number  -> ", (type uns8 al), nl);
+    stdout.put("Second number -> ", (type uns8 bl), nl);
+    stdout.put("Third number  -> ", (type uns8 cl), nl);
+    stdout.put("Fourth number -> ", (type uns8 dl), nl);
+    stdout.newln();
+
+    showGraph(al);
+    showGraph(bl);
+    showGraph(cl);
+    showGraph(dl);
+    stdout.newln();
+
+    min(al, bl, cl, dl);
+    stdout.newln();
+
+    max(al, bl, cl, dl);
+    stdout.newln();
+
+    totalAndAverage(al, bl, cl, dl);
+    stdout.newln();
+
+    goAgain();
+    breakif(al == false);
+    console.cls();
+  endfor;
+
+end LabEight;
