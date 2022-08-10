@@ -1,4 +1,4 @@
-# csci10_fall2022
+# CSCI 10, Butte College, Fall 2022
 
 Labs and projects for CSCI 10-N2465 (Computer Architecture &amp; Organization), Fall 2022, Butte College.
 
