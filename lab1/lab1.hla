@@ -1,0 +1,13 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabOne;
+
+#include("stdlib.hhf");
+
+begin LabOne;
+  
+    stdout.put("Hello, world!", nl);
+
+end LabOne;

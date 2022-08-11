@@ -1,0 +1,13 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program LabThree;
+
+#include("stdlib.hhf");
+
+begin LabThree;
+  
+    // complete lab requirements here
+
+end LabThree;

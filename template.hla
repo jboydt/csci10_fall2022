@@ -1,0 +1,13 @@
+// ASSIGNMENT NAME
+//
+// PROGRAMMER NAME
+// DATE
+program Template;
+
+#include("stdlib.hhf");
+
+begin Template;
+  
+    stdout.put("Hello, world!", nl);
+
+end Template;
